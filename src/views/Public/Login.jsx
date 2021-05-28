@@ -33,7 +33,9 @@ export default function Login() {
         <div className="max-w-md w-full mx-auto">
           <div className="bg-white rounded-lg overflow-hidden shadow-2xl">
             <div className="p-8">
-              <h1 className="text-4xl text-center mb-12 font-thin">Compbook</h1>
+              <h1 className="text-4xl text-center font-semibold mb-12">
+                Compbook
+              </h1>
 
               <form onSubmit={handleSubmit}>
                 <div className="mb-5">

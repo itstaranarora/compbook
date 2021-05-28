@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-
+import { useAuth } from "contexts/AuthContext";
 function Header() {
   const [navbarOpen, setNavbarOpen] = useState(false);
-
+  const { logout } = useAuth();
   return (
     <div className="shadow sticky top-0 z-10 bg-white">
       <header className="container flex flex-wrap justify-between items-center py-5">
@@ -49,6 +49,9 @@ function Header() {
               </NavLink>
             </li>
           </ul>
+          <span onClick={logout} className="text-base-800 cursor-pointer">
+            Logout
+          </span>
           <div className="hidden lg:flex items-center ml-4 pl-4 cursor-pointer border-l-2 text-base-600 hover:text-black">
             <Link to="/update-profile">
               <svg

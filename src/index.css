@@ -21,3 +21,25 @@
 
 @layer components {
 }
+
+.shape1 {
+  position: absolute;
+  top: 0;
+  z-index: 1;
+  right: 0;
+  background: rgba(55, 48, 163);
+  height: 150px;
+  width: 200px;
+  border-bottom-left-radius: 100%;
+}
+
+.shape2 {
+  position: absolute;
+  z-index: 1;
+  height: 150px;
+  width: 200px;
+  bottom: 0;
+  left: 0;
+  background: #ffc662;
+  border-top-right-radius: 100%;
+}

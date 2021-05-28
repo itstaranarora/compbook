@@ -10,6 +10,7 @@ module.exports = {
         invert: colors.gray,
         primary: colors.indigo,
         secondary: colors.cyan,
+        success: "#FFC662",
       },
       container: {
         center: true,

@@ -6,6 +6,7 @@ import Dashboard from "./User/Dashboard";
 import Login from "./Public/Login";
 import PrivateRoute from "components/PrivateRoute";
 import ForgotPassword from "./Public/ForgotPassword";
+import CodePreview from "./User/CodePreview";
 import UpdateProfile from "./User/UpdateProfile";
 
 function App() {
@@ -14,6 +15,8 @@ function App() {
       <AuthProvider>
         <Switch>
           <PrivateRoute exact path="/" component={Dashboard} />
+          <PrivateRoute path="/folder/:folderId" component={Dashboard} />
+          <PrivateRoute path="/preview" component={CodePreview} />
           <PrivateRoute path="/update-profile" component={UpdateProfile} />
           <Route path="/signup" component={Signup} />
           <Route path="/login" component={Login} />
