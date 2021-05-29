@@ -1,15 +1,17 @@
 import React, { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useAuth } from "contexts/AuthContext";
+import LOGO from "assets/logo.png";
+
 function Header() {
   const [navbarOpen, setNavbarOpen] = useState(false);
   const { logout } = useAuth();
   return (
     <div className="shadow sticky top-0 z-10 bg-white">
-      <header className="container flex flex-wrap justify-between items-center py-5">
-        <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block lg:justify-start">
+      <header className="container flex flex-wrap justify-between items-center">
+        <div className="w-full relative flex justify-between lg:w-auto lg:static lg:block py-1 lg:justify-start">
           <Link to="/">
-            <h3 className="text-2xl font-semibold">Compbook</h3>
+            <img src={LOGO} className="h-16" alt="logo compbook" />
           </Link>
           <button
             className="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"

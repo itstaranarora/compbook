@@ -1,7 +1,7 @@
 import React from "react";
-import { FolderIcon } from "@heroicons/react/solid";
-import { useHistory } from "react-router-dom";
 import { database } from "../firebase";
+import { useHistory } from "react-router-dom";
+import { CodeIcon } from "@heroicons/react/solid";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 
@@ -10,7 +10,7 @@ const initialState = {
   mouseY: null,
 };
 
-function Folder({ folder }) {
+function Component({ file }) {
   const [state, setState] = React.useState(initialState);
   const history = useHistory();
 
@@ -27,20 +27,20 @@ function Folder({ folder }) {
   };
 
   const handleDelete = () => {
-    database.folders.doc(folder.id).delete();
+    database.files.doc(file.id).delete();
   };
 
   return (
     <>
       <div
         onClick={() => {
-          history.push(`/folder/${folder.id}`, { folder: folder });
+          history.push(`/component/${file.id}`);
         }}
         onContextMenu={handleClick}
         className="p-5 border hover:bg-gray-100 cursor-pointer items-center flex bg-white mr-5"
       >
-        <FolderIcon height="35px" width="35px" />
-        <h4 className="ml-3">{folder.name}</h4>
+        <CodeIcon height="35px" width="35px" />
+        <h4 className="ml-3">{file.name}</h4>
       </div>
       <Menu
         keepMounted
@@ -59,4 +59,4 @@ function Folder({ folder }) {
   );
 }
 
-export default Folder;
+export default Component;

@@ -1,39 +1,28 @@
-import React, { useState } from "react";
+import React from "react";
 import { useAuth } from "contexts/AuthContext";
-import { Link, useHistory } from "react-router-dom";
 import Layout from "components/Layout";
 import AddFolder from "components/AddFolder";
+import AddComponent from "components/AddComponent";
 import Folder from "components/Folder";
+import Component from "components/Component";
 import FolderBreadcrumbs from "components/FolderBreadcrumbs";
-import { useFolder } from "hooks/useFolder";
+import { useFolder, ROOT_FOLDER } from "hooks/useFolder";
 import { useParams, useLocation } from "react-router-dom";
 
 export default function Dashboard() {
-  const [error, setError] = useState("");
   const { state = {} } = useLocation();
-  const { currentUser, logout } = useAuth();
+  const { currentUser } = useAuth();
   const { folderId } = useParams();
-  const history = useHistory();
 
-  const { folder, childFolders } = useFolder(folderId, state.folder);
+  const { folder, childFolders, childFiles } = useFolder(
+    folderId,
+    state.folder
+  );
 
   const name = currentUser.email.substring(
     0,
     currentUser.email.lastIndexOf("@")
   );
-
-  async function handleLogout() {
-    setError("");
-
-    try {
-      await logout();
-      history.push("/login");
-    } catch {
-      setError("Failed to log out");
-    }
-  }
-
-  console.log(folder);
 
   return (
     <>
@@ -49,18 +38,26 @@ export default function Dashboard() {
           <div className="py-5 border bg-white">
             <div className="container flex justify-between items-center">
               <FolderBreadcrumbs currentFolder={folder} />
-              <AddFolder currentFolder={folder} />
+              <div className="flex space-x-2">
+                {folder !== ROOT_FOLDER && (
+                  <AddComponent currentFolder={folder} />
+                )}
+                <AddFolder currentFolder={folder} />
+              </div>
             </div>
           </div>
-          {childFolders.length > 0 && (
-            <div className="container py-5 flex flex-wrap">
-              {childFolders?.map((childFolder) => (
-                <div key={childFolder.id}>
-                  <Folder folder={childFolder} />
-                </div>
-              ))}
-            </div>
-          )}
+          <div className="container py-5 flex flex-wrap">
+            {childFolders?.map((childFolder) => (
+              <div key={childFolder.id}>
+                <Folder folder={childFolder} />
+              </div>
+            ))}
+            {childFiles?.map((childFile) => (
+              <div key={childFile.id}>
+                <Component file={childFile} />
+              </div>
+            ))}
+          </div>
         </>
       </Layout>
     </>

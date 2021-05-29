@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import { useAuth } from "contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 import Note from "elements/Note";
+import LOGO from "assets/logoFull.png";
 import Button from "elements/Button";
 
 export default function Login() {
@@ -33,11 +34,10 @@ export default function Login() {
         <div className="max-w-md w-full mx-auto">
           <div className="bg-white rounded-lg overflow-hidden shadow-2xl">
             <div className="p-8">
-              <h1 className="text-4xl text-center font-semibold mb-12">
-                Compbook
-              </h1>
-
-              <form onSubmit={handleSubmit}>
+              <div className="flex justify-center">
+                <img src={LOGO} alt="logo compbook" />
+              </div>
+              <form className="mt-5" onSubmit={handleSubmit}>
                 <div className="mb-5">
                   <label
                     for="email"

@@ -6,7 +6,6 @@ import { ROOT_FOLDER } from "hooks/useFolder";
 function FolderBreadcrumbs({ currentFolder }) {
   let path = [];
   if (currentFolder) path = [...path, ...currentFolder.path];
-  console.log("path", path);
 
   return (
     <div className="flex items-center text-secondary-700 space-x-2">

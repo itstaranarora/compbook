@@ -3,6 +3,7 @@ import { useAuth } from "contexts/AuthContext";
 import { Link, useHistory } from "react-router-dom";
 import Note from "elements/Note";
 import Button from "elements/Button";
+import LOGO from "assets/logoFull.png";
 
 export default function Signup() {
   const emailRef = useRef();
@@ -38,9 +39,11 @@ export default function Signup() {
         <div className="max-w-md w-full mx-auto">
           <div className="bg-white rounded-lg overflow-hidden shadow-2xl">
             <div className="p-8">
-              <h1 className="text-4xl text-center mb-12 font-thin">Compbook</h1>
+              <div className="flex justify-center">
+                <img src={LOGO} alt="logo compbook" />
+              </div>
 
-              <form onSubmit={handleSubmit}>
+              <form className="mt-5" onSubmit={handleSubmit}>
                 <div className="mb-5">
                   <label
                     for="email"

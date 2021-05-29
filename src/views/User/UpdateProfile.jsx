@@ -43,8 +43,6 @@ export default function UpdateProfile() {
       });
   }
 
-  console.log(currentUser);
-
   return (
     <Layout>
       <div className="container mx-auto p-4 flex mt-20">

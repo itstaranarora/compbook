@@ -5,7 +5,7 @@ import { database } from "../firebase";
 import { ROOT_FOLDER } from "hooks/useFolder";
 import { useAuth } from "contexts/AuthContext";
 
-export default function AddFolder({ currentFolder }) {
+export default function AddComponent({ currentFolder }) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [name, setName] = React.useState("");
   const { currentUser } = useAuth();
@@ -24,18 +24,14 @@ export default function AddFolder({ currentFolder }) {
 
     if (currentFolder === null) return;
 
-    const path = [...currentFolder.path];
+    const folderId = currentFolder !== ROOT_FOLDER ? currentFolder.id : "";
 
-    if (currentFolder !== ROOT_FOLDER) {
-      path.push({ name: currentFolder.name, id: currentFolder.id });
-    }
-
-    database.folders.add({
+    database.files.add({
       name: name,
       userId: currentUser.uid,
       createdAt: database.getCurrentTimestamp(),
-      path: path,
-      parentId: currentFolder.id,
+      folderId: folderId,
+      content: "",
     });
     setName("");
     handleClose();
@@ -44,7 +40,7 @@ export default function AddFolder({ currentFolder }) {
   return (
     <>
       <Button onClick={handleClick} className="py-2 px-3 ">
-        Add Folder
+        Add Component
       </Button>
       <Popover
         open={open}
@@ -65,11 +61,11 @@ export default function AddFolder({ currentFolder }) {
             maxLength={20}
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Folder Name"
+            placeholder="Component Name"
             required
             className="border rounded py-2 px-2"
           />
-          <Button className="mt-2 w-full py-2">Add Folder</Button>
+          <Button className="mt-2 w-full py-2">Add Component</Button>
         </form>
       </Popover>
     </>
