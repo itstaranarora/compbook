@@ -70,7 +70,7 @@ export default function Signup() {
                   </label>
 
                   <input
-                    type="text"
+                    type="password"
                     name="password"
                     ref={passwordRef}
                     required
@@ -86,7 +86,7 @@ export default function Signup() {
                   </label>
 
                   <input
-                    type="text"
+                    type="password"
                     name="passwordConfirmRef"
                     ref={passwordConfirmRef}
                     required

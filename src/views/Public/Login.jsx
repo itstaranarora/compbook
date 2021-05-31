@@ -64,7 +64,7 @@ export default function Login() {
                   </label>
 
                   <input
-                    type="text"
+                    type="password"
                     name="password"
                     ref={passwordRef}
                     required

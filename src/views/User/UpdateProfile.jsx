@@ -81,7 +81,7 @@ export default function UpdateProfile() {
                   </label>
 
                   <input
-                    type="text"
+                    type="password"
                     name="password"
                     ref={passwordRef}
                     required
@@ -97,7 +97,7 @@ export default function UpdateProfile() {
                   </label>
 
                   <input
-                    type="text"
+                    type="password"
                     name="passwordConfirmRef"
                     ref={passwordConfirmRef}
                     required
