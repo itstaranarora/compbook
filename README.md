@@ -2,7 +2,9 @@
 
 Tailwind components get you up and running in no time. The problem is that they are hard to manage, so I built compbook. Compbook allow you to organize your component library, create templates and use them ease!
 
-Check out the live demo:
+![IMG](./compbook.png)
+
+Check out the live demo: https://compbook.netlify.app/
 
 This app is build using React, Tailwind, and Firebase
 
