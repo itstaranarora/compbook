@@ -1,53 +1,64 @@
-import React, { useState, useEffect } from "react";
-import Layout from "components/Layout";
-import { database } from "../../firebase";
-import Editor from "@monaco-editor/react";
-import { useParams, useHistory } from "react-router-dom";
+import Editor from '@monaco-editor/react';
+import Layout from 'components/Layout';
+import React, { useEffect, useRef, useState } from 'react';
+import { useHistory, useParams } from 'react-router-dom';
+import { database } from '../../firebase';
 
 function CodePreview() {
   const { componentId } = useParams();
-  const [srcDoc, setSrcDoc] = useState("");
   const history = useHistory();
-  const [currentCompoent, setCurrentCompoent] = useState({});
+  const [currentComponent, setCurrentComponent] = useState({ name: '', content: '' });
+  const iframeRef = useRef(null);
+  const iframeSrcDoc = `
+    <html>
+      <head>
+        <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
+        <script>
+          window.onmessage = function(e) {
+            if (e.data) {
+              document.body.innerHTML = e.data;
+            }
+          };
+        </script>
+      </head>
+      <body></body>
+    </html>
+  `;
 
   useEffect(() => {
     database.files
       .doc(componentId)
       .get()
       .then((doc) => {
-        setCurrentCompoent(database.formatDoc(doc));
+        setCurrentComponent(database.formatDoc(doc));
       })
       .catch(() => {
-        history?.push("/");
+        history?.push('/');
       });
     // eslint-disable-next-line
   }, [componentId]);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      setSrcDoc(`
-        <html>
-          <head>
-          <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet"><link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-          </head>
-          <body>${currentCompoent?.content}</body>
-        </html>
-      `);
+      if (currentComponent.content) {
+        if (iframeRef && iframeRef.current) {
+          iframeRef.current.contentWindow.postMessage(currentComponent.content, '*');
+        }
+      }
     }, 250);
 
     return () => clearTimeout(timeout);
-  }, [currentCompoent?.content]);
+  }, [currentComponent?.content]);
 
   const handleSave = () => {
-    if (currentCompoent?.name === "") {
-      alert("Component name is required!");
+    if (currentComponent?.name === '') {
+      alert('Component name is required!');
       return;
     }
-
     database.files
       .doc(componentId)
-      .update(currentCompoent)
-      .then(() => alert("Component Saved!"));
+      .update(currentComponent)
+      .then(() => alert('Component Saved!'));
   };
 
   const handleDelete = () => {
@@ -55,32 +66,30 @@ function CodePreview() {
       .doc(componentId)
       .delete()
       .then(() => {
-        alert("Component Deleted!");
-        history.push("/");
+        alert('Component Deleted!');
+        history.push('/');
       });
   };
 
   return (
     <Layout>
-      <div
-        style={{ height: "calc(100vh - 72px)" }}
-        className="relative flex flex-col"
-      >
+      <div style={{ height: 'calc(100vh - 72px)' }} className="relative flex flex-col">
         <div className="hidden lg:block shape1"></div>
         <div className="hidden lg:block shape2"></div>
-        <div className="max-w-3xl flex-grow flex flex-col mx-auto w-full">
+        <div className="flex flex-col flex-grow w-full max-w-3xl mx-auto">
           <input
             type="text"
-            className="mt-12 bg-transparent text-3xl text-center"
+            className="mt-12 text-3xl text-center bg-transparent"
             maxLength="30"
-            value={currentCompoent?.name}
+            value={currentComponent?.name}
             onChange={(e) => {
-              setCurrentCompoent((pre) => ({ ...pre, name: e.target.value }));
+              setCurrentComponent((pre) => ({ ...pre, name: e.target.value }));
             }}
           />
-          <div className="rounded mt-5 bg-white shadow p-5">
+          <div className="p-5 mt-5 bg-white rounded shadow">
             <iframe
-              srcDoc={srcDoc}
+              ref={iframeRef}
+              srcDoc={iframeSrcDoc}
               title="output"
               sandbox="allow-scripts"
               frameBorder="0"
@@ -92,24 +101,20 @@ function CodePreview() {
             <Editor
               theme="vs-dark"
               language="html"
-              value={currentCompoent?.content}
-              onChange={(value) =>
-                setCurrentCompoent((pre) => ({ ...pre, content: value }))
-              }
-              loading={"Loading..."}
+              value={currentComponent?.content}
+              onChange={(value) => setCurrentComponent((pre) => ({ ...pre, content: value }))}
+              loading={'Loading...'}
             />
           </div>
-          <div className="flex justify-center space-x-5 mt-5">
+          <div className="flex justify-center my-5 space-x-5">
             <button
               onClick={handleSave}
-              className="bg-primary-600 hover:bg-primary-500 py-3 text-white rounded-full w-28"
-            >
+              className="py-3 text-white rounded-full bg-primary-600 hover:bg-primary-500 w-28">
               Save
             </button>
             <button
               onClick={handleDelete}
-              className="bg-secondary-500 hover:bg-primary-500 py-3 text-white rounded-full w-28"
-            >
+              className="py-3 text-white rounded-full bg-secondary-500 hover:bg-primary-500 w-28">
               Delete
             </button>
           </div>
